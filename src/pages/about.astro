@@ -1,0 +1,87 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { BOOKING_URL } from '../site.config';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'AboutPage',
+  name: 'About Prosperity Federal Solutions',
+  url: 'https://prosperityfederalsolutions.com/about',
+};
+---
+<BaseLayout
+  title="About Us | Prosperity Federal Solutions"
+  description="Learn about Prosperity Federal Solutions, part of the Price Services Group family of companies, and our commitment to reliable procurement and supply solutions."
+  path="/about"
+  jsonLd={jsonLd}
+>
+  <section class="page-hero">
+    <div class="container">
+      <p class="eyebrow eyebrow-gold">About Us</p>
+      <h1>Building Stronger Futures through reliable procurement and supply solutions for government and institutional clients.</h1>
+    </div>
+  </section>
+
+  <section>
+    <div class="container about-grid">
+      <div class="about-copy">
+        <h2>Our Mission</h2>
+        <p>
+          Prosperity Federal Solutions LLC provides procurement and supply solutions for
+          government and institutional clients. We source general goods and equipment, coordinate
+          reliable vendor networks, and manage fulfillment and logistics so our clients can count
+          on consistent, compliant execution.
+        </p>
+        <p>
+          Prosperity Federal Solutions is part of the Price Services Group family of companies,
+          based in North Carolina. That family of companies spans insurance, technology, and now
+          procurement and supply services — sharing a common commitment to reliability, integrity,
+          and building stronger futures for the clients and communities we serve.
+        </p>
+        <div class="callout">
+          <p>
+            <strong>Building Stronger Futures.</strong> That commitment guides how we approach
+            every procurement, every vendor relationship, and every fulfillment we manage for our
+            government and institutional clients.
+          </p>
+        </div>
+        <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer" class="btn btn-teal about-cta">Schedule a Consultation</a>
+      </div>
+      <div class="about-headshot">
+        <img src="/img/headshot.png" alt="Kayla Price, of the Price Services Group family of companies" />
+        <p class="caption">
+          Kayla Price, part of the Price Services Group family of companies — the group behind
+          Prosperity Federal Solutions.
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-hero { background: var(--color-lavender); padding: 4rem 0; }
+  :root[data-theme="dark"] .page-hero { background: var(--color-bg-alt); }
+  .page-hero h1 { max-width: 780px; }
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: 2.5rem;
+    align-items: start;
+  }
+  .about-headshot img {
+    width: 100%;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+  }
+  .caption {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    text-align: center;
+    margin-top: 0.75rem;
+  }
+  .about-cta { margin-top: 1rem; }
+  @media (max-width: 800px) {
+    .about-grid { grid-template-columns: 1fr; }
+    .about-headshot { max-width: 260px; margin: 0 auto; }
+  }
+</style>

@@ -1,0 +1,177 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { BOOKING_URL } from '../site.config';
+
+const whatWeDo = [
+  'Procurement and supply of general goods and equipment',
+  'Vendor sourcing and coordination',
+  'Contract fulfillment and logistics support',
+  'Scalable supply solutions tailored to operational needs',
+];
+
+const whoWeServe = [
+  'Federal agencies',
+  'State and local governments',
+  'Institutional and commercial clients',
+];
+
+const capabilities = [
+  { title: 'Procurement & Supply of General Goods', desc: 'Reliable sourcing and delivery of general goods and equipment for agency and institutional operations.' },
+  { title: 'Vendor Network Development', desc: 'Building and coordinating a dependable network of vendors to meet client requirements.' },
+  { title: 'Contract Fulfillment & Logistics', desc: 'Managing fulfillment and logistics so contracts are delivered accurately and on time.' },
+  { title: 'Operational Supply Solutions', desc: 'Ongoing supply support tailored to the day-to-day operational needs of our clients.' },
+  { title: 'Scalable Procurement Systems', desc: 'Procurement processes designed to scale with client demand and long-term needs.' },
+];
+
+const whyUs = [
+  'Reliable and consistent execution',
+  'Compliance-focused processes',
+  'Efficient sourcing and fulfillment',
+  'Built for scalability and long-term partnerships',
+];
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'Prosperity Federal Solutions LLC',
+    url: 'https://prosperityfederalsolutions.com',
+    telephone: '+1-919-307-5874',
+    email: 'kayla@priceservicesgroup.com',
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'LocalBusiness',
+    name: 'Prosperity Federal Solutions LLC',
+    url: 'https://prosperityfederalsolutions.com',
+    telephone: '+1-919-307-5874',
+    email: 'kayla@priceservicesgroup.com',
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'GovernmentService',
+    name: 'Procurement & Supply Solutions',
+    provider: {
+      '@type': 'Organization',
+      name: 'Prosperity Federal Solutions LLC',
+    },
+    serviceType: 'Procurement, Supply, Logistics',
+    areaServed: 'US',
+  },
+];
+---
+<BaseLayout
+  title="Procurement & Supply Solutions for Government and Institutional Clients | Prosperity Federal Solutions"
+  description="Prosperity Federal Solutions provides reliable sourcing, procurement, and fulfillment of general goods and operational supplies for federal, state, and local agencies."
+  path="/"
+  jsonLd={jsonLd}
+>
+  <section class="hero">
+    <div class="container hero-inner">
+      <p class="eyebrow eyebrow-gold">Procurement &amp; Supply</p>
+      <h1>Procurement &amp; Supply Solutions for Government and Institutional Clients</h1>
+      <p class="subhead">
+        We provide reliable sourcing, procurement, and fulfillment of general goods and
+        operational supplies for federal, state, and local agencies. Our focus is on efficiency,
+        compliance, and consistent execution.
+      </p>
+      <div class="hero-ctas">
+        <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer" class="btn btn-gold">Schedule a Consultation</a>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <p class="eyebrow">What We Do</p>
+      <h2>Procurement and supply, handled reliably</h2>
+      <div class="grid grid-2">
+        {whatWeDo.map((item) => (
+          <div class="card">
+            <p class="list-item">{item}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section-alt">
+    <div class="container">
+      <p class="eyebrow">Who We Serve</p>
+      <h2>Partners across government and institutional sectors</h2>
+      <div class="grid grid-3">
+        {whoWeServe.map((item) => (
+          <div class="card card-gold">
+            <p class="list-item">{item}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <p class="eyebrow">Capabilities</p>
+      <h2>What we bring to every engagement</h2>
+      <div class="grid grid-3">
+        {capabilities.map((c) => (
+          <a href="/services" class="card capability-card">
+            <h3>{c.title}</h3>
+            <p>{c.desc}</p>
+            <span class="learn-more">Learn more &rarr;</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section-alt">
+    <div class="container">
+      <p class="eyebrow">Why Prosperity Federal Solutions</p>
+      <h2>What sets us apart</h2>
+      <div class="grid grid-2">
+        {whyUs.map((item) => (
+          <div class="card card-gold">
+            <p class="list-item">{item}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <div class="container cta-inner">
+      <h2>Ready to work with us?</h2>
+      <p>Schedule a consultation to talk through your procurement and supply needs.</p>
+      <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer" class="btn btn-teal">Schedule a Consultation</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    background: linear-gradient(135deg, var(--color-dark) 0%, #2b1147 100%);
+    color: #fff;
+    padding: 6rem 0;
+  }
+  .hero-inner { max-width: 760px; }
+  .hero h1 { color: #fff; font-size: clamp(2rem, 4vw, 3rem); }
+  .subhead { font-size: 1.15rem; color: #e2d4f0; margin-bottom: 1.75rem; }
+  .hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+  .list-item { font-weight: 600; margin: 0; color: var(--color-text); }
+
+  .capability-card { text-decoration: none; display: block; transition: transform 0.15s ease; border-top: 3px solid var(--color-gold); }
+  .capability-card:hover { transform: translateY(-4px); }
+  .capability-card h3 { font-size: 1.1rem; margin-bottom: 0.4rem; }
+  .capability-card p { color: var(--color-text-muted); font-size: 0.92rem; margin: 0 0 0.75rem; }
+  .learn-more { color: var(--color-gold); font-weight: 700; font-size: 0.85rem; }
+
+  .cta-section {
+    background: var(--color-purple);
+    color: #fff;
+    text-align: center;
+  }
+  .cta-inner h2 { color: #fff; }
+  .cta-inner p { color: #f0e6f8; margin-bottom: 1.5rem; }
+</style>
