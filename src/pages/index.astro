@@ -59,12 +59,59 @@ const jsonLd = [
     areaServed: 'US',
   },
 ];
+
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: 'What does Prosperity Federal Solutions do?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Prosperity Federal Solutions provides reliable sourcing, procurement, and fulfillment of general goods and operational supplies for federal, state, and local agencies, with a focus on efficiency, compliance, and consistent execution.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Who does Prosperity Federal Solutions serve?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'We serve federal agencies, state and local governments, and institutional and commercial clients that need dependable procurement, vendor sourcing, and contract fulfillment support.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'What vendor sourcing and coordination services are offered?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'We build and coordinate a dependable network of vendors to meet client requirements, managing relationships so procurement needs are met consistently and on schedule.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'How does Prosperity Federal Solutions handle contract fulfillment and logistics?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'We manage fulfillment and logistics end-to-end so contracts are delivered accurately and on time, keeping operations running smoothly for the agencies and clients we support.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Can Prosperity Federal Solutions scale with growing procurement needs?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Yes. Our procurement processes and supply systems are designed to scale with client demand, supporting long-term partnerships as operational needs grow.',
+      },
+    },
+  ],
+};
 ---
 <BaseLayout
-  title="Procurement & Supply Solutions for Government and Institutional Clients | Prosperity Federal Solutions"
-  description="Prosperity Federal Solutions provides reliable sourcing, procurement, and fulfillment of general goods and operational supplies for federal, state, and local agencies."
+  title="Procurement & Supply | Prosperity Federal Solutions"
+  description="Prosperity Federal Solutions provides reliable sourcing, procurement, and fulfillment of general goods and operational supplies for federal agencies."
   path="/"
-  jsonLd={jsonLd}
+  jsonLd={[...jsonLd, faqJsonLd]}
 >
   <section class="hero">
     <div class="container hero-inner">
