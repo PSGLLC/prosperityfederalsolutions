@@ -45,6 +45,11 @@ const current = Astro.url.pathname.replace(/\/$/, '') || '/';
     color: var(--color-text);
   }
   .brand img { height: 50px; width: auto; display: block; }
+  [data-theme="dark"] .brand img {
+    background: rgba(234, 216, 246, 0.9);
+    border-radius: 0.5rem;
+    padding: 0.3rem 0.5rem;
+  }
   .nav-links {
     display: flex;
     align-items: center;
