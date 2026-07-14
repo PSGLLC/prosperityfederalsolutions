@@ -6,8 +6,10 @@ const year = 2026;
   <div class="container footer-inner">
     <div class="footer-top">
       <div class="footer-brand">
-        <img src="/brand/pfs-logo.svg" alt="Prosperity Federal Solutions" height="45" style="width:auto" />
-        <p class="tagline">{TAGLINE}</p>
+        <div class="brand-text">
+          <span class="brand-name">Prosperity Federal Solutions</span>
+          <span class="brand-tagline">Building Stronger Futures</span>
+        </div>
       </div>
       <nav class="footer-links">
         {NAV_LINKS.filter((l) => l.href !== '/').map((l) => (
@@ -40,10 +42,9 @@ const year = 2026;
     padding-bottom: 2rem;
     border-bottom: 1px solid rgba(255,255,255,0.12);
   }
-  .footer-brand img {
-    margin-bottom: 0.4rem;
-  }
-  .tagline { font-family: var(--font-heading); font-style: italic; color: var(--color-teal); margin: 0; }
+  .brand-text { display: flex; flex-direction: column; }
+  .brand-name { font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: var(--color-purple); line-height: 1.2; }
+  .brand-tagline { font-family: var(--font-body); font-size: 0.75rem; color: var(--color-teal); letter-spacing: 0.05em; }
   .footer-links { display: flex; flex-wrap: wrap; gap: 1rem 1.5rem; }
   .footer-links a { color: #d8c8ea; text-decoration: none; font-size: 0.9rem; }
   .footer-links a:hover { color: var(--color-teal); }

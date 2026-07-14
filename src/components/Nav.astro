@@ -5,7 +5,10 @@ const current = Astro.url.pathname.replace(/\/$/, '') || '/';
 <header class="nav-wrap">
   <div class="container nav-inner">
     <a href="/" class="brand">
-      <img src="/brand/pfs-logo.svg" alt="Prosperity Federal Solutions" height="55" style="width:auto" />
+      <div class="brand-text">
+        <span class="brand-name">Prosperity Federal Solutions</span>
+        <span class="brand-tagline">Building Stronger Futures</span>
+      </div>
     </a>
     <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
       <span></span><span></span><span></span>
@@ -44,7 +47,9 @@ const current = Astro.url.pathname.replace(/\/$/, '') || '/';
     text-decoration: none;
     color: var(--color-text);
   }
-  .brand img { display: block; }
+  .brand-text { display: flex; flex-direction: column; }
+  .brand-name { font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: var(--color-purple); line-height: 1.2; }
+  .brand-tagline { font-family: var(--font-body); font-size: 0.75rem; color: var(--color-teal); letter-spacing: 0.05em; }
   .nav-links {
     display: flex;
     align-items: center;
