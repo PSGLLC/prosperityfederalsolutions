@@ -19,4 +19,4 @@ Allow: /
 User-agent: Bytespider
 Allow: /
 
-Sitemap: https://prosperityfederalsolutions.com/sitemap.xml
+Sitemap: https://prosperityfederalsolutions.com/sitemap-index.xml
