@@ -14,12 +14,11 @@ const year = 2026;
           <a href={l.href}>{l.label}</a>
         ))}
       </nav>
-      <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer" class="btn btn-gold">Schedule Consultation</a>
+      <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer" class="btn btn-teal">Schedule Consultation</a>
     </div>
 
     <div class="compliance">
-      <p class="contact-line">{CONTACT.phone} &bull; {CONTACT.email}</p>
-      <p class="copyright">&copy; {year} Prosperity Federal Solutions LLC. {TAGLINE}</p>
+      <p class="copyright">&copy; {year} Prosperity Federal Solutions LLC | Phone {CONTACT.phone} | {TAGLINE}</p>
     </div>
   </div>
 </footer>
@@ -53,6 +52,5 @@ const year = 2026;
     max-width: 900px;
     margin: 0 0 0.5rem;
   }
-  .contact-line { color: var(--color-gold) !important; font-weight: 600; font-size: 0.85rem !important; }
   .copyright { color: #9e8bb6; }
 </style>

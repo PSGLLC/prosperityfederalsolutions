@@ -1,6 +1,5 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { BOOKING_URL } from '../site.config';
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -17,7 +16,7 @@ const jsonLd = {
 >
   <section class="page-hero">
     <div class="container">
-      <p class="eyebrow eyebrow-gold">About Us</p>
+      <p class="eyebrow">About Us</p>
       <h1>Building Stronger Futures through reliable procurement and supply solutions for government and institutional clients.</h1>
     </div>
   </section>
@@ -45,7 +44,8 @@ const jsonLd = {
             government and institutional clients.
           </p>
         </div>
-        <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer" class="btn btn-teal about-cta">Schedule a Consultation</a>
+        <p class="sam-note"><em>SAM.gov registration in progress. Certifications pending.</em></p>
+        <a href="/contact" class="btn btn-teal about-cta">Let's Work Together</a>
       </div>
       <div class="about-headshot">
         <img src="/img/headshot.png" alt="Kayla Price, of the Price Services Group family of companies" />
@@ -79,7 +79,8 @@ const jsonLd = {
     text-align: center;
     margin-top: 0.75rem;
   }
-  .about-cta { margin-top: 1rem; }
+  .sam-note { color: var(--color-text-muted); font-size: 0.85rem; margin-top: 1.25rem; }
+  .about-cta { margin-top: 0.5rem; }
   @media (max-width: 800px) {
     .about-grid { grid-template-columns: 1fr; }
     .about-headshot { max-width: 260px; margin: 0 auto; }

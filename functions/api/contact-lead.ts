@@ -17,6 +17,7 @@ interface ContactPayload {
   phone?: string;
   agencyName?: string;
   message?: string;
+  hearAboutUs?: string;
   pagePath?: string;
   website?: string; // honeypot — real visitors never fill this
   smsOptIn?: boolean;
@@ -74,6 +75,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
   const phone = String(body.phone ?? "").trim();
   const agencyName = String(body.agencyName ?? "").trim();
   const message = String(body.message ?? "").trim();
+  const hearAboutUs = String(body.hearAboutUs ?? "").trim();
 
   const smsOptIn = body.smsOptIn === true;
 
@@ -98,6 +100,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     phone,
     agencyName,
     message,
+    hearAboutUs,
     locationId: GHL_LOCATION_ID,
     tags: ["federal-inquiry"],
     source: "prosperityfederalsolutions-contact-page",

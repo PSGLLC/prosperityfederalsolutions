@@ -3,10 +3,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { BOOKING_URL } from '../site.config';
 
 const whatWeDo = [
-  'Procurement and supply of general goods and equipment',
-  'Vendor sourcing and coordination',
-  'Contract fulfillment and logistics support',
-  'Scalable supply solutions tailored to operational needs',
+  'Procurement & Supply of General Goods',
+  'Vendor Sourcing & Coordination',
+  'Contract Fulfillment & Logistics',
+  'Scalable Supply Solutions',
 ];
 
 const whoWeServe = [
@@ -17,7 +17,7 @@ const whoWeServe = [
 
 const capabilities = [
   { title: 'Procurement & Supply of General Goods', desc: 'Reliable sourcing and delivery of general goods and equipment for agency and institutional operations.' },
-  { title: 'Vendor Network Development', desc: 'Building and coordinating a dependable network of vendors to meet client requirements.' },
+  { title: 'Vendor Sourcing & Coordination', desc: 'Building and coordinating a dependable network of vendors to meet client requirements.' },
   { title: 'Contract Fulfillment & Logistics', desc: 'Managing fulfillment and logistics so contracts are delivered accurately and on time.' },
   { title: 'Operational Supply Solutions', desc: 'Ongoing supply support tailored to the day-to-day operational needs of our clients.' },
   { title: 'Scalable Procurement Systems', desc: 'Procurement processes designed to scale with client demand and long-term needs.' },
@@ -68,7 +68,7 @@ const jsonLd = [
 >
   <section class="hero">
     <div class="container hero-inner">
-      <p class="eyebrow eyebrow-gold">Procurement &amp; Supply</p>
+      <p class="eyebrow">Procurement &amp; Supply</p>
       <h1>Procurement &amp; Supply Solutions for Government and Institutional Clients</h1>
       <p class="subhead">
         We provide reliable sourcing, procurement, and fulfillment of general goods and
@@ -76,7 +76,7 @@ const jsonLd = [
         compliance, and consistent execution.
       </p>
       <div class="hero-ctas">
-        <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer" class="btn btn-gold">Schedule a Consultation</a>
+        <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer" class="btn btn-teal">Schedule a Consultation</a>
       </div>
     </div>
   </section>
@@ -101,7 +101,7 @@ const jsonLd = [
       <h2>Partners across government and institutional sectors</h2>
       <div class="grid grid-3">
         {whoWeServe.map((item) => (
-          <div class="card card-gold">
+          <div class="card card-accent">
             <p class="list-item">{item}</p>
           </div>
         ))}
@@ -131,7 +131,7 @@ const jsonLd = [
       <h2>What sets us apart</h2>
       <div class="grid grid-2">
         {whyUs.map((item) => (
-          <div class="card card-gold">
+          <div class="card card-accent">
             <p class="list-item">{item}</p>
           </div>
         ))}
@@ -161,11 +161,12 @@ const jsonLd = [
 
   .list-item { font-weight: 600; margin: 0; color: var(--color-text); }
 
-  .capability-card { text-decoration: none; display: block; transition: transform 0.15s ease; border-top: 3px solid var(--color-gold); }
+  .capability-card { text-decoration: none; display: block; transition: transform 0.15s ease; border-top: 3px solid var(--color-teal); }
   .capability-card:hover { transform: translateY(-4px); }
   .capability-card h3 { font-size: 1.1rem; margin-bottom: 0.4rem; }
   .capability-card p { color: var(--color-text-muted); font-size: 0.92rem; margin: 0 0 0.75rem; }
-  .learn-more { color: var(--color-gold); font-weight: 700; font-size: 0.85rem; }
+  .learn-more { color: var(--color-purple); font-weight: 700; font-size: 0.85rem; }
+  :root[data-theme="dark"] .learn-more { color: var(--color-teal); }
 
   .cta-section {
     background: var(--color-purple);

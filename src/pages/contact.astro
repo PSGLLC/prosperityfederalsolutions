@@ -19,11 +19,10 @@ const jsonLd = {
 >
   <section class="page-hero">
     <div class="container">
-      <p class="eyebrow eyebrow-gold">Contact</p>
+      <p class="eyebrow">Contact</p>
       <h1>Let's Talk About Your Procurement Needs</h1>
       <p class="subhead">
-        Reach out with questions about procurement, vendor coordination, or supply solutions —
-        we're happy to help.
+        Ready to discuss your procurement needs? We'd love to hear from you.
       </p>
       <div class="contact-details">
         <a href={CONTACT.phoneHref} class="contact-item">{CONTACT.phone}</a>
@@ -57,12 +56,16 @@ const jsonLd = {
             <input type="tel" id="phone" name="phone" autocomplete="tel" />
           </div>
           <div class="form-row">
-            <label for="agencyName">Agency Name <span class="optional">(optional)</span></label>
+            <label for="agencyName">Agency/Organization Name <span class="optional">(optional)</span></label>
             <input type="text" id="agencyName" name="agencyName" autocomplete="organization" />
           </div>
           <div class="form-row">
-            <label for="message">Message <span aria-hidden="true">*</span></label>
+            <label for="message">Project Description <span aria-hidden="true">*</span></label>
             <textarea id="message" name="message" rows="5" required></textarea>
+          </div>
+          <div class="form-row">
+            <label for="hearAboutUs">How did you hear about us? <span class="optional">(optional)</span></label>
+            <input type="text" id="hearAboutUs" name="hearAboutUs" />
           </div>
           <!-- Honeypot — hidden from real visitors -->
           <div class="hp-field" aria-hidden="true">
@@ -73,11 +76,11 @@ const jsonLd = {
           <div class="form-row form-row-checkbox">
             <label class="checkbox-label" for="smsOptIn">
               <input type="checkbox" id="smsOptIn" name="smsOptIn" required />
-              <span>I agree to receive text messages from Prosperity Federal Solutions. Message and data rates may apply.</span>
+              <span>I agree to receive text messages from Prosperity Federal Solutions LLC. Message and data rates may apply.</span>
             </label>
           </div>
 
-          <button type="submit" class="btn btn-gold form-submit">Send Message</button>
+          <button type="submit" class="btn btn-primary form-submit">Send Message</button>
           <p id="contact-form-error" class="form-error" role="alert" hidden></p>
         </form>
 
@@ -91,7 +94,7 @@ const jsonLd = {
         </p>
       </div>
 
-      <div class="card card-gold info-card">
+      <div class="card card-accent info-card">
         <h2>Reach Us Directly</h2>
         <p><strong>Phone:</strong> <a href={CONTACT.phoneHref}>{CONTACT.phone}</a></p>
         <p><strong>Email:</strong> <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a></p>
@@ -132,6 +135,7 @@ const jsonLd = {
         phone: String(formData.get('phone') ?? '').trim(),
         agencyName: String(formData.get('agencyName') ?? '').trim(),
         message: String(formData.get('message') ?? '').trim(),
+        hearAboutUs: String(formData.get('hearAboutUs') ?? '').trim(),
         website: String(formData.get('website') ?? ''),
         smsOptIn: true,
         pagePath: window.location.pathname,
