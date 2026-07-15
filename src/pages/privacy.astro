@@ -1,0 +1,179 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { CONTACT } from '../site.config';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: 'Privacy Policy',
+  url: 'https://prosperityfederalsolutions.com/privacy',
+};
+---
+<BaseLayout
+  title="Privacy Policy | Prosperity Federal Solutions"
+  description="How Prosperity Federal Solutions collects, uses, and protects the information you share with us."
+  path="/privacy"
+  jsonLd={jsonLd}
+>
+  <section class="hero">
+    <div class="container hero-inner">
+      <p class="eyebrow eyebrow-gold">Legal</p>
+      <h1>Privacy Policy</h1>
+      <p class="subhead">Effective Date: July 15, 2026</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="container legal">
+      <p>
+        Prosperity Federal Solutions LLC ("Prosperity Federal Solutions," "we," "us," or "our")
+        provides procurement, supply, and fulfillment solutions for government and institutional
+        clients. This Privacy Policy explains what information we collect through
+        prosperityfederalsolutions.com (the "Site"), how we use it, and the choices available to
+        you. By using the Site, you agree to the practices described in this Policy.
+      </p>
+
+      <h2>1. Information We Collect</h2>
+      <ul>
+        <li>
+          <strong>Information you provide directly.</strong> When you submit our contact form,
+          we collect your first name, last name, email address, and, if you choose to provide
+          them, your phone number, agency or organization name, project description, and how you
+          heard about us. Submitting a project description or contact details is voluntary, but
+          required fields (name, email, and project description) are needed for us to respond.
+        </li>
+        <li>
+          <strong>SMS opt-in.</strong> If you check the box on our contact form agreeing to
+          receive text messages, we record that consent along with the phone number you provide.
+        </li>
+        <li>
+          <strong>Automatically collected information.</strong> We automatically collect
+          technical information when you visit the Site, including your IP address, browser
+          type, device type, referring URL, pages viewed, and time spent on the Site, through
+          cookies and similar technologies described in Section 5.
+        </li>
+        <li>
+          <strong>Communications.</strong> If you contact us by phone, email, or by scheduling a
+          consultation, we retain a record of that communication, including any information you
+          voluntarily provide.
+        </li>
+      </ul>
+
+      <h2>2. How We Use Your Information</h2>
+      <ul>
+        <li>Create and maintain a contact record for you in our customer relationship
+          management system (GoHighLevel, "GHL"), so we can respond to your inquiry and follow
+          up appropriately;</li>
+        <li>Evaluate and respond to federal, state, local, and institutional procurement
+          inquiries submitted through the Site ("federal inquiry" data), including routing your
+          message to the appropriate team member;</li>
+        <li>Contact you by phone, text (if you have opted in), or email to discuss your
+          procurement, supply, or fulfillment needs or to schedule a consultation;</li>
+        <li>Improve the Site's content, usability, and performance; and</li>
+        <li>Comply with applicable legal, regulatory, contractual, and recordkeeping
+          obligations, including those that may apply to government procurement relationships.</li>
+      </ul>
+
+      <h2>3. Consent to Contact</h2>
+      <p>
+        If you check the box on our contact form agreeing to receive text messages, or otherwise
+        provide your telephone number, you consent to be contacted by Prosperity Federal
+        Solutions LLC by telephone, text message (SMS), and email regarding your procurement
+        inquiry and related services. Message and data rates may apply. Consent to be contacted
+        is not a condition of engaging our services. You may revoke your consent at any time by
+        replying "STOP" to any text message, clicking "unsubscribe" in any email, or contacting
+        us using the information in Section 8.
+      </p>
+
+      <h2>4. How Your Contact Form Submission Is Handled</h2>
+      <p>
+        When you submit the contact form on this Site, your information is transmitted securely
+        and used to automatically create or update a contact record in our GoHighLevel CRM. A
+        member of our team then reviews your project description and reaches out using the
+        contact method(s) you provided. A hidden "honeypot" field on the form helps us detect and
+        block automated spam submissions; it is not visible to human visitors and no information
+        entered into it (there should be none) is used for any purpose other than spam
+        prevention.
+      </p>
+
+      <h2>5. Cookies and Tracking Technologies</h2>
+      <p>
+        We use cookies, pixels, and similar technologies to operate the Site, remember your
+        preferences, measure traffic and engagement, and support analytics tools. You can control
+        cookies through your browser settings; disabling cookies may affect certain Site
+        functionality. We do not knowingly sell personal information, as that term is defined
+        under applicable state privacy laws.
+      </p>
+
+      <h2>6. How We Share Information</h2>
+      <p>We do not sell your personal information. We may share information with:</p>
+      <ul>
+        <li>Service providers who help us operate the Site and manage contacts, including our
+          CRM provider (GoHighLevel) and email/SMS delivery platforms, under confidentiality
+          obligations;</li>
+        <li>Subcontractors, suppliers, or partners only where necessary to evaluate or fulfill a
+          procurement inquiry you have affirmatively made; and</li>
+        <li>Government authorities or regulators, where required by law or applicable
+          procurement regulations.</li>
+      </ul>
+
+      <h2>7. Data Retention and Security</h2>
+      <p>
+        We retain contact and form information for as long as reasonably necessary to fulfill
+        the purposes described in this Policy and to comply with applicable recordkeeping and
+        contractual obligations. We use commercially reasonable administrative and technical
+        safeguards to protect your information, but no method of transmission or storage is
+        completely secure.
+      </p>
+
+      <h2>8. Your Choices and Rights</h2>
+      <p>
+        You may request access to, correction of, or deletion of the personal information we
+        hold about you, or ask us to stop contacting you, by emailing {CONTACT.email} or calling
+        {CONTACT.phone}. Depending on your state of residence, you may have additional rights
+        under applicable privacy law.
+      </p>
+
+      <h2>9. No Guarantee of Contract Award</h2>
+      <p>
+        Information on this Site is provided for general informational purposes about our
+        procurement, supply, and fulfillment capabilities. Submitting an inquiry through this
+        Site does not constitute an offer, bid, proposal, or guarantee of any contract, award, or
+        business relationship.
+      </p>
+
+      <h2>10. Children's Privacy</h2>
+      <p>
+        This Site is not directed to individuals under the age of 18, and we do not knowingly
+        collect personal information from children.
+      </p>
+
+      <h2>11. Changes to This Policy</h2>
+      <p>
+        We may update this Privacy Policy from time to time. The "Effective Date" above reflects
+        the most recent revision. Continued use of the Site after changes are posted constitutes
+        acceptance of the updated Policy.
+      </p>
+
+      <h2>12. Contact Us</h2>
+      <p>
+        Questions about this Privacy Policy may be directed to Prosperity Federal Solutions LLC
+        at {CONTACT.email} or {CONTACT.phone}.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    background: linear-gradient(135deg, var(--color-dark) 0%, #2b1147 100%);
+    color: #fff;
+    padding: 4rem 0;
+  }
+  .hero h1 { color: #fff; }
+  .subhead { color: #e2d4f0; }
+  .legal { max-width: 800px; }
+  .legal h2 { margin-top: 2rem; font-size: 1.3rem; }
+  .legal p, .legal li { color: var(--color-text-muted); line-height: 1.7; }
+  .legal ul { padding-left: 1.4rem; }
+</style>

@@ -1,0 +1,144 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { CONTACT } from '../site.config';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: 'Terms of Use',
+  url: 'https://prosperityfederalsolutions.com/terms',
+};
+---
+<BaseLayout
+  title="Terms of Use | Prosperity Federal Solutions"
+  description="Terms governing your use of the Prosperity Federal Solutions website."
+  path="/terms"
+  jsonLd={jsonLd}
+>
+  <section class="hero">
+    <div class="container hero-inner">
+      <p class="eyebrow eyebrow-gold">Legal</p>
+      <h1>Terms of Use</h1>
+      <p class="subhead">Effective Date: July 15, 2026</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="container legal">
+      <p>
+        These Terms of Use ("Terms") govern your access to and use of
+        prosperityfederalsolutions.com (the "Site"), operated by Prosperity Federal Solutions
+        LLC. By accessing or using the Site, you agree to be bound by these Terms. If you do not
+        agree, please do not use the Site.
+      </p>
+
+      <h2>1. Informational Purpose Only</h2>
+      <p>
+        The Site is provided for general informational purposes about Prosperity Federal
+        Solutions LLC's procurement, supply, and fulfillment capabilities for government and
+        institutional clients. Nothing on this Site constitutes an offer, bid, proposal, or
+        binding commitment to supply any product or service, and nothing on the Site should be
+        relied upon as a substitute for a formal solicitation response, contract, or written
+        agreement.
+      </p>
+
+      <h2>2. No Guarantee of Contract Awards</h2>
+      <p>
+        Prosperity Federal Solutions LLC makes no representation, warranty, or guarantee — express
+        or implied — that submitting an inquiry through this Site, engaging our services, or
+        participating in any procurement process will result in a contract award, purchase order,
+        or other business relationship. Government and institutional procurement decisions are
+        made by the applicable purchasing agency or entity in accordance with its own
+        solicitation, evaluation, and award procedures, which are outside our control.
+      </p>
+
+      <h2>3. Not Legal, Regulatory, or Compliance Advice</h2>
+      <p>
+        Content on this Site relating to procurement processes, government contracting, or
+        regulatory requirements is general in nature and does not constitute legal, regulatory,
+        or compliance advice. You should consult your own legal counsel or contracting officer
+        regarding any specific procurement, bid, or regulatory question.
+      </p>
+
+      <h2>4. No Guarantee of Accuracy</h2>
+      <p>
+        Procurement requirements, pricing, availability, and regulations change frequently and
+        vary by agency, program, and jurisdiction. While we strive to keep this Site accurate and
+        current, we make no warranty, express or implied, that any information on the Site is
+        complete, accurate, or up to date. Always confirm current requirements, pricing, and
+        terms directly with Prosperity Federal Solutions LLC or the applicable contracting
+        authority before relying on Site content.
+      </p>
+
+      <h2>5. Use of the Site</h2>
+      <p>
+        You agree to use the Site only for lawful purposes and in a manner consistent with these
+        Terms. You may not: (a) copy, reproduce, or redistribute Site content for commercial
+        purposes without our written permission; (b) attempt to interfere with the Site's normal
+        operation; or (c) submit false or misleading information through any form on the Site.
+      </p>
+
+      <h2>6. Intellectual Property</h2>
+      <p>
+        All content on the Site, including text, graphics, and logos, is owned by or licensed to
+        Prosperity Federal Solutions LLC and is protected by applicable intellectual property
+        laws. You may view and share Site content for personal, non-commercial, informational use
+        only.
+      </p>
+
+      <h2>7. Third-Party Links</h2>
+      <p>
+        The Site may link to third-party websites for your convenience. We do not control and
+        are not responsible for the content or practices of third-party sites.
+      </p>
+
+      <h2>8. Limitation of Liability</h2>
+      <p>
+        To the fullest extent permitted by law, Prosperity Federal Solutions LLC shall not be
+        liable for any direct, indirect, incidental, or consequential damages arising out of your
+        use of, or inability to use, the Site or its content, including any business or
+        procurement decisions made based on information found on the Site.
+      </p>
+
+      <h2>9. Communications Consent</h2>
+      <p>
+        By submitting a form on this Site, you consent to be contacted as described in our{' '}
+        <a href="/privacy">Privacy Policy</a>, including by phone, text (if you have opted in),
+        and email, regarding your procurement inquiry and related services.
+      </p>
+
+      <h2>10. Changes to These Terms</h2>
+      <p>
+        We may revise these Terms from time to time. The "Effective Date" above reflects the
+        most recent revision. Continued use of the Site after changes are posted constitutes
+        acceptance of the revised Terms.
+      </p>
+
+      <h2>11. Governing Law</h2>
+      <p>
+        These Terms are governed by the laws of the State of North Carolina, without regard to
+        its conflict of law principles.
+      </p>
+
+      <h2>12. Contact Us</h2>
+      <p>
+        Questions about these Terms may be directed to Prosperity Federal Solutions LLC at
+        {CONTACT.email} or {CONTACT.phone}.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    background: linear-gradient(135deg, var(--color-dark) 0%, #2b1147 100%);
+    color: #fff;
+    padding: 4rem 0;
+  }
+  .hero h1 { color: #fff; }
+  .subhead { color: #e2d4f0; }
+  .legal { max-width: 800px; }
+  .legal h2 { margin-top: 2rem; font-size: 1.3rem; }
+  .legal p, .legal li { color: var(--color-text-muted); line-height: 1.7; }
+  .legal ul { padding-left: 1.4rem; }
+</style>
