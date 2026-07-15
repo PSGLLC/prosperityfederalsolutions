@@ -13,7 +13,10 @@ interface Props {
 }
 
 const { title, description, path, jsonLd, ogImage = '/brand/psg-logo.png' } = Astro.props;
-const canonical = new URL(path, SITE_URL).toString();
+// Astro builds directory-style output (/about/index.html) and Cloudflare 308-redirects
+// /about -> /about/, so the canonical must self-reference the trailing-slash URL.
+const normalizedPath = path === '/' || path.endsWith('/') ? path : `${path}/`;
+const canonical = new URL(normalizedPath, SITE_URL).toString();
 const ogImageUrl = new URL(ogImage, SITE_URL).toString();
 const jsonLdEntries = Array.isArray(jsonLd) ? jsonLd : jsonLd ? [jsonLd] : [];
 ---

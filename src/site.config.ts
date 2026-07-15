@@ -4,9 +4,9 @@ export const BOOKING_URL = 'https://host.safemsngr.com/widget/booking/o0AlHrGuSv
 
 export const NAV_LINKS = [
   { href: '/', label: 'Prosperity Federal Solutions' },
-  { href: '/services', label: 'Services' },
-  { href: '/about', label: 'About' },
-  { href: '/contact', label: 'Contact' },
+  { href: '/services/', label: 'Services' },
+  { href: '/about/', label: 'About' },
+  { href: '/contact/', label: 'Contact' },
 ];
 
 export const CONTACT = {
