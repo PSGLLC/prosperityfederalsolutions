@@ -1,0 +1,52 @@
+---
+import PortalLayout from '../../layouts/PortalLayout.astro';
+
+const client = Astro.locals.client;
+if (!client) return Astro.redirect('/login');
+
+const db = Astro.locals.runtime.env.DB;
+
+// Mark admin messages as read the moment the client opens this thread.
+await db.prepare("UPDATE messages SET read_by_client = 1 WHERE client_id = ? AND author_type = 'admin'").bind(client.id).run();
+
+const messages = await db
+  .prepare('SELECT author_type, body, created_at FROM messages WHERE client_id = ? ORDER BY created_at ASC')
+  .bind(client.id)
+  .all<{ author_type: string; body: string; created_at: string }>();
+---
+<PortalLayout title="Messages" unreadCount={0}>
+  <h1>Messages</h1>
+  <p class="lede">A secure message thread with Prosperity Federal Solutions staff. Portal-only — no email is sent.</p>
+
+  <div class="card thread">
+    {messages.results.length === 0 ? (
+      <p class="muted">No messages yet — send one below to get started.</p>
+    ) : (
+      <div class="msg-list">
+        {messages.results.map((m) => (
+          <div class:list={['msg', m.author_type === 'admin' ? 'msg-admin' : 'msg-client']}>
+            <p class="msg-meta">{m.author_type === 'admin' ? 'Prosperity Federal Solutions' : 'You'} — {m.created_at}</p>
+            <p>{m.body}</p>
+          </div>
+        ))}
+      </div>
+    )}
+    <form method="POST" action="/api/messages/send" class="msg-form">
+      <div class="form-row">
+        <label for="body">New message</label>
+        <textarea id="body" name="body" rows="3" required></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Send</button>
+    </form>
+  </div>
+</PortalLayout>
+
+<style>
+  .lede { color: var(--color-text-muted); margin-bottom: 1.5rem; }
+  .muted { color: var(--color-text-muted); }
+  .msg-list { display: flex; flex-direction: column; gap: 0.9rem; margin-bottom: 1.25rem; }
+  .msg { padding: 0.85rem 1rem; border-radius: 10px; background: var(--color-bg-alt); }
+  .msg-admin { border-left: 3px solid var(--color-purple); }
+  .msg-client { border-left: 3px solid var(--color-teal); }
+  .msg-meta { font-size: 0.78rem; color: var(--color-text-muted); margin: 0 0 0.3rem; }
+</style>

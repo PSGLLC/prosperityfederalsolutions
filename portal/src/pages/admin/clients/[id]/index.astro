@@ -1,0 +1,158 @@
+---
+import AdminLayout from '../../../../layouts/AdminLayout.astro';
+
+const admin = Astro.locals.admin;
+if (!admin) return Astro.redirect('/admin/login');
+
+const db = Astro.locals.runtime.env.DB;
+const id = Astro.params.id;
+
+const client = await db
+  .prepare('SELECT id, full_name, email, company_name, phone, active, created_at FROM clients WHERE id = ?')
+  .bind(id)
+  .first<{ id: string; full_name: string; email: string; company_name: string | null; phone: string | null; active: number; created_at: string }>();
+
+if (!client) return new Response('Not found', { status: 404 });
+
+// Mark client's own messages as read by admin now that this thread is open.
+await db.prepare("UPDATE messages SET read_by_admin = 1 WHERE client_id = ?").bind(id).run();
+
+const [documents, contracts, tickets, messages] = await Promise.all([
+  db.prepare('SELECT id, category, file_name, retention_10yr, created_at FROM documents WHERE client_id = ? ORDER BY created_at DESC').bind(id).all<{ id: string; category: string; file_name: string; retention_10yr: number; created_at: string }>(),
+  db.prepare('SELECT id, title, status, start_date, expected_completion, notes FROM contracts WHERE client_id = ? ORDER BY created_at DESC').bind(id).all<{ id: string; title: string; status: string; start_date: string | null; expected_completion: string | null; notes: string | null }>(),
+  db.prepare('SELECT id, subject, status, priority, created_at FROM tickets WHERE client_id = ? ORDER BY created_at DESC').bind(id).all<{ id: string; subject: string; status: string; priority: string; created_at: string }>(),
+  db.prepare('SELECT author_type, body, created_at FROM messages WHERE client_id = ? ORDER BY created_at ASC').bind(id).all<{ author_type: string; body: string; created_at: string }>(),
+]);
+
+const categories = ['Contracts', 'Agreements', 'Forms', 'Correspondence'];
+const statuses = ['Active', 'Pending', 'Completed', 'Cancelled'];
+---
+<AdminLayout title={client.full_name}>
+  <a href="/admin/clients/" class="back-link">&larr; All Clients</a>
+  <h1>{client.full_name}</h1>
+  <p class="muted">{client.email} {client.company_name ? `— ${client.company_name}` : ''} {client.phone ? `— ${client.phone}` : ''}</p>
+
+  <div class="grid grid-2">
+    <div class="card">
+      <h2>Documents</h2>
+      <form method="POST" action="/api/admin/documents/upload" enctype="multipart/form-data" class="inline-form">
+        <input type="hidden" name="clientId" value={client.id} />
+        <div class="form-row">
+          <label for="category">Category</label>
+          <select id="category" name="category" required>
+            {categories.map((c) => <option value={c}>{c}</option>)}
+          </select>
+        </div>
+        <div class="form-row">
+          <label for="file">File</label>
+          <input type="file" id="file" name="file" accept=".pdf,image/*" required />
+        </div>
+        <div class="form-row checkbox-row">
+          <label><input type="checkbox" name="retention10yr" value="1" /> Flag 10-year retention</label>
+        </div>
+        <button type="submit" class="btn btn-primary btn-sm">Upload</button>
+      </form>
+      {documents.results.length === 0 ? <p class="muted">No documents yet.</p> : (
+        <ul class="list">
+          {documents.results.map((d) => (
+            <li>
+              <a href={`/api/documents/${d.id}/download`}>{d.file_name}</a>
+              <span class="muted"> — {d.category}{d.retention_10yr ? ' — 10yr retention' : ''}</span>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+
+    <div class="card">
+      <h2>Contracts</h2>
+      <form method="POST" action="/api/admin/contracts/create" class="inline-form">
+        <input type="hidden" name="clientId" value={client.id} />
+        <div class="form-row">
+          <label for="title">Title</label>
+          <input type="text" id="title" name="title" required />
+        </div>
+        <div class="grid grid-2">
+          <div class="form-row">
+            <label for="startDate">Start Date</label>
+            <input type="date" id="startDate" name="startDate" />
+          </div>
+          <div class="form-row">
+            <label for="expectedCompletion">Expected Completion</label>
+            <input type="date" id="expectedCompletion" name="expectedCompletion" />
+          </div>
+        </div>
+        <div class="form-row">
+          <label for="notes">Notes</label>
+          <textarea id="notes" name="notes" rows="2"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary btn-sm">Add Contract</button>
+      </form>
+      {contracts.results.length === 0 ? <p class="muted">No contracts yet.</p> : (
+        <ul class="list">
+          {contracts.results.map((c) => (
+            <li>
+              <strong>{c.title}</strong>
+              <form method="POST" action={`/api/admin/contracts/${c.id}/status`} class="status-form">
+                <select name="status">
+                  {statuses.map((s) => <option value={s} selected={s === c.status}>{s}</option>)}
+                </select>
+                <button type="submit" class="btn btn-outline btn-sm">Update</button>
+              </form>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  </div>
+
+  <div class="grid grid-2 lower-grid">
+    <div class="card">
+      <h2>Tickets</h2>
+      {tickets.results.length === 0 ? <p class="muted">No tickets yet.</p> : (
+        <ul class="list">
+          {tickets.results.map((t) => (
+            <li><a href={`/admin/tickets/${t.id}/`}>{t.subject}</a> <span class="muted">— {t.status} — {t.priority}</span></li>
+          ))}
+        </ul>
+      )}
+    </div>
+
+    <div class="card">
+      <h2>Messages</h2>
+      {messages.results.length === 0 ? <p class="muted">No messages yet.</p> : (
+        <div class="msg-list">
+          {messages.results.map((m) => (
+            <div class:list={['msg', m.author_type === 'admin' ? 'msg-admin' : 'msg-client']}>
+              <p class="msg-meta">{m.author_type === 'admin' ? 'Staff' : client.full_name} — {m.created_at}</p>
+              <p>{m.body}</p>
+            </div>
+          ))}
+        </div>
+      )}
+      <form method="POST" action="/api/messages/send" class="inline-form">
+        <input type="hidden" name="clientId" value={client.id} />
+        <div class="form-row">
+          <label for="body">Reply</label>
+          <textarea id="body" name="body" rows="3" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary btn-sm">Send</button>
+      </form>
+    </div>
+  </div>
+</AdminLayout>
+
+<style>
+  .back-link { display: inline-block; margin-bottom: 1rem; font-weight: 600; font-size: 0.9rem; text-decoration: none; }
+  .muted { color: var(--color-text-muted); font-size: 0.9rem; }
+  .inline-form { margin: 1rem 0; padding: 1rem; background: var(--color-bg-alt); border-radius: 10px; }
+  .list { list-style: none; padding: 0; margin: 0.5rem 0; display: flex; flex-direction: column; gap: 0.5rem; }
+  .status-form { display: inline-flex; gap: 0.4rem; align-items: center; margin-top: 0.3rem; }
+  .checkbox-row label { font-weight: 400; display: flex; align-items: center; gap: 0.4rem; }
+  .lower-grid { margin-top: 1.5rem; }
+  .msg-list { display: flex; flex-direction: column; gap: 0.7rem; margin-bottom: 1rem; max-height: 320px; overflow-y: auto; }
+  .msg { padding: 0.7rem 0.9rem; border-radius: 10px; background: var(--color-bg-alt); font-size: 0.9rem; }
+  .msg-admin { border-left: 3px solid var(--color-purple); }
+  .msg-client { border-left: 3px solid var(--color-teal); }
+  .msg-meta { font-size: 0.75rem; color: var(--color-text-muted); margin: 0 0 0.25rem; }
+</style>

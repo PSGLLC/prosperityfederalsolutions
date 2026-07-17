@@ -1,0 +1,39 @@
+---
+import AdminLayout from '../../../layouts/AdminLayout.astro';
+
+const admin = Astro.locals.admin;
+if (!admin) return Astro.redirect('/admin/login');
+
+const db = Astro.locals.runtime.env.DB;
+const threads = await db
+  .prepare(
+    `SELECT c.id, c.full_name, c.email,
+       (SELECT COUNT(*) FROM messages WHERE client_id = c.id AND author_type = 'client' AND read_by_admin = 0) as unread,
+       (SELECT MAX(created_at) FROM messages WHERE client_id = c.id) as last_message_at
+     FROM clients c
+     WHERE EXISTS (SELECT 1 FROM messages WHERE client_id = c.id)
+     ORDER BY unread DESC, last_message_at DESC`,
+  )
+  .all<{ id: string; full_name: string; email: string; unread: number; last_message_at: string }>();
+---
+<AdminLayout title="Messages">
+  <h1>Client Messages</h1>
+  <div class="card">
+    {threads.results.length === 0 ? <p class="muted">No message threads yet.</p> : (
+      <table>
+        <thead><tr><th>Client</th><th>Last Activity</th><th>Unread</th><th></th></tr></thead>
+        <tbody>
+          {threads.results.map((t) => (
+            <tr>
+              <td>{t.full_name} <span class="muted">({t.email})</span></td>
+              <td>{t.last_message_at}</td>
+              <td>{t.unread > 0 ? <span class="badge badge-high">{t.unread} new</span> : '—'}</td>
+              <td><a href={`/admin/clients/${t.id}/`} class="btn btn-outline btn-sm">Open Thread</a></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    )}
+  </div>
+</AdminLayout>
+<style>.muted { color: var(--color-text-muted); font-size: 0.85rem; }</style>

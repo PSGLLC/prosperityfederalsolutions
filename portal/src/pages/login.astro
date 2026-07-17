@@ -1,0 +1,54 @@
+---
+import '../styles/global.css';
+
+if (Astro.locals.client) {
+  return Astro.redirect('/');
+}
+const error = Astro.url.searchParams.get('error');
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Client Login | PFS Client Portal</title>
+    <script is:inline>
+      (function () {
+        try {
+          var saved = localStorage.getItem('pfs_theme');
+          var theme = saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+          document.documentElement.setAttribute('data-theme', theme);
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body class="login-body">
+    <div class="login-wrap">
+      <div class="card login-card">
+        <h1>Client Portal Login</h1>
+        <p class="muted">Prosperity Federal Solutions — secure client access.</p>
+        {error && <p class="form-error">{decodeURIComponent(error)}</p>}
+        <form method="POST" action="/api/login">
+          <div class="form-row">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required autocomplete="email" />
+          </div>
+          <div class="form-row">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required autocomplete="current-password" />
+          </div>
+          <button type="submit" class="btn btn-primary" style="width:100%;">Log In</button>
+        </form>
+        <p class="muted small">Accounts are created by Prosperity Federal Solutions staff. Contact us if you need access.</p>
+      </div>
+    </div>
+  </body>
+</html>
+<style>
+  .login-body { display: flex; min-height: 100vh; align-items: center; justify-content: center; background: var(--color-dark); }
+  .login-wrap { width: 100%; max-width: 420px; padding: 1.5rem; }
+  .login-card { text-align: center; }
+  .muted { color: var(--color-text-muted); font-size: 0.9rem; }
+  .small { font-size: 0.78rem; margin-top: 1.25rem; }
+</style>

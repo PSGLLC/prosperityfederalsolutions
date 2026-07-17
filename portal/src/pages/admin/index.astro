@@ -1,0 +1,66 @@
+---
+import AdminLayout from '../../layouts/AdminLayout.astro';
+
+const admin = Astro.locals.admin;
+if (!admin) return Astro.redirect('/admin/login');
+
+const db = Astro.locals.runtime.env.DB;
+const [clientCount, openTickets, recentClients, recentTickets] = await Promise.all([
+  db.prepare('SELECT COUNT(*) as c FROM clients WHERE active = 1').first<{ c: number }>(),
+  db.prepare("SELECT COUNT(*) as c FROM tickets WHERE status != 'Resolved'").first<{ c: number }>(),
+  db.prepare('SELECT id, full_name, email, created_at FROM clients ORDER BY created_at DESC LIMIT 5').all<{ id: string; full_name: string; email: string; created_at: string }>(),
+  db
+    .prepare(
+      `SELECT t.id, t.subject, t.status, t.priority, c.full_name FROM tickets t JOIN clients c ON c.id = t.client_id ORDER BY t.created_at DESC LIMIT 5`,
+    )
+    .all<{ id: string; subject: string; status: string; priority: string; full_name: string }>(),
+]);
+---
+<AdminLayout title="Dashboard">
+  <h1>Welcome, {admin.fullName.split(' ')[0]}</h1>
+  <div class="grid grid-2 stats">
+    <div class="card stat-card">
+      <p class="stat-num">{clientCount?.c ?? 0}</p>
+      <p class="stat-label">Active Clients</p>
+    </div>
+    <div class="card stat-card">
+      <p class="stat-num">{openTickets?.c ?? 0}</p>
+      <p class="stat-label">Open Tickets</p>
+    </div>
+  </div>
+
+  <div class="grid grid-2 dash-lower">
+    <div class="card">
+      <h2>Recently Added Clients</h2>
+      {recentClients.results.length === 0 ? <p class="muted">None yet.</p> : (
+        <ul class="list">
+          {recentClients.results.map((c) => (
+            <li><a href={`/admin/clients/${c.id}/`}>{c.full_name}</a> <span class="muted">— {c.email}</span></li>
+          ))}
+        </ul>
+      )}
+      <a href="/admin/clients/" class="btn btn-outline btn-sm">Manage Clients</a>
+    </div>
+    <div class="card">
+      <h2>Recent Tickets</h2>
+      {recentTickets.results.length === 0 ? <p class="muted">None yet.</p> : (
+        <ul class="list">
+          {recentTickets.results.map((t) => (
+            <li><a href={`/admin/tickets/${t.id}/`}>{t.subject}</a> <span class="muted">— {t.full_name} — {t.status}</span></li>
+          ))}
+        </ul>
+      )}
+      <a href="/admin/tickets/" class="btn btn-outline btn-sm">All Tickets</a>
+    </div>
+  </div>
+</AdminLayout>
+
+<style>
+  .stats { margin-bottom: 1.5rem; }
+  .stat-card { text-align: center; }
+  .stat-num { font-family: var(--font-heading); font-size: 2.5rem; color: var(--color-purple); margin: 0; }
+  :root[data-theme='dark'] .stat-num { color: var(--color-teal); }
+  .stat-label { color: var(--color-text-muted); margin: 0.25rem 0 0.75rem; font-weight: 600; }
+  .list { list-style: none; padding: 0; margin: 0 0 1rem; display: flex; flex-direction: column; gap: 0.5rem; }
+  .muted { color: var(--color-text-muted); font-size: 0.85rem; }
+</style>

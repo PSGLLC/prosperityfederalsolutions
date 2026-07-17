@@ -1,0 +1,83 @@
+---
+import AdminLayout from '../../../../layouts/AdminLayout.astro';
+
+const admin = Astro.locals.admin;
+if (!admin) return Astro.redirect('/admin/login');
+
+const db = Astro.locals.runtime.env.DB;
+const id = Astro.params.id;
+
+const ticket = await db
+  .prepare(
+    `SELECT t.id, t.subject, t.description, t.priority, t.status, t.created_at, c.id as client_id, c.full_name
+     FROM tickets t JOIN clients c ON c.id = t.client_id WHERE t.id = ?`,
+  )
+  .bind(id)
+  .first<{ id: string; subject: string; description: string; priority: string; status: string; created_at: string; client_id: string; full_name: string }>();
+
+if (!ticket) return new Response('Not found', { status: 404 });
+
+const replies = await db
+  .prepare('SELECT author_type, body, created_at FROM ticket_replies WHERE ticket_id = ? ORDER BY created_at ASC')
+  .bind(id)
+  .all<{ author_type: string; body: string; created_at: string }>();
+
+const statuses = ['Open', 'In Progress', 'Resolved'];
+---
+<AdminLayout title={ticket.subject}>
+  <a href="/admin/tickets/" class="back-link">&larr; All Tickets</a>
+  <div class="card">
+    <div class="ticket-head">
+      <div>
+        <h1>{ticket.subject}</h1>
+        <p class="muted">From <a href={`/admin/clients/${ticket.client_id}/`}>{ticket.full_name}</a> — opened {ticket.created_at}</p>
+      </div>
+      <span class={`badge badge-${ticket.priority.toLowerCase()}`}>{ticket.priority}</span>
+    </div>
+    <p>{ticket.description}</p>
+
+    <form method="POST" action={`/api/admin/tickets/${ticket.id}/status`} class="status-form">
+      <label for="status">Status</label>
+      <select id="status" name="status">
+        {statuses.map((s) => <option value={s} selected={s === ticket.status}>{s}</option>)}
+      </select>
+      <button type="submit" class="btn btn-outline btn-sm">Update</button>
+    </form>
+  </div>
+
+  <div class="card thread">
+    <h2>Conversation</h2>
+    {replies.results.length === 0 ? (
+      <p class="muted">No replies yet.</p>
+    ) : (
+      <div class="reply-list">
+        {replies.results.map((r) => (
+          <div class:list={['reply', r.author_type === 'admin' ? 'reply-admin' : 'reply-client']}>
+            <p class="reply-meta">{r.author_type === 'admin' ? 'Staff' : ticket.full_name} — {r.created_at}</p>
+            <p>{r.body}</p>
+          </div>
+        ))}
+      </div>
+    )}
+    <form method="POST" action={`/api/tickets/${ticket.id}/reply`} class="reply-form">
+      <div class="form-row">
+        <label for="body">Respond</label>
+        <textarea id="body" name="body" rows="3" required></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Send Response</button>
+    </form>
+  </div>
+</AdminLayout>
+
+<style>
+  .back-link { display: inline-block; margin-bottom: 1rem; font-weight: 600; font-size: 0.9rem; text-decoration: none; }
+  .muted { color: var(--color-text-muted); font-size: 0.85rem; }
+  .ticket-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+  .status-form { display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem; }
+  .thread { margin-top: 1.5rem; }
+  .reply-list { display: flex; flex-direction: column; gap: 0.9rem; margin-bottom: 1.25rem; }
+  .reply { padding: 0.85rem 1rem; border-radius: 10px; background: var(--color-bg-alt); }
+  .reply-admin { border-left: 3px solid var(--color-purple); }
+  .reply-client { border-left: 3px solid var(--color-teal); }
+  .reply-meta { font-size: 0.78rem; color: var(--color-text-muted); margin: 0 0 0.3rem; }
+</style>

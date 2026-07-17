@@ -1,0 +1,20 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "pfs-client-portal",
+  "compatibility_date": "2026-07-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "pages_build_output_dir": "dist",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "pfs-portal",
+      "database_id": "6e07a960-55c7-4bd7-a959-e7598f3d02b4"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "CLIENT_DOCS",
+      "bucket_name": "pfs-client-docs"
+    }
+  ]
+}

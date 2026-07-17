@@ -1,0 +1,72 @@
+---
+import PortalLayout from '../../layouts/PortalLayout.astro';
+
+const client = Astro.locals.client;
+if (!client) return Astro.redirect('/login');
+
+const db = Astro.locals.runtime.env.DB;
+const docs = await db
+  .prepare('SELECT id, category, file_name, size_bytes, retention_10yr, created_at FROM documents WHERE client_id = ? ORDER BY created_at DESC')
+  .bind(client.id)
+  .all<{ id: string; category: string; file_name: string; size_bytes: number; retention_10yr: number; created_at: string }>();
+
+const unread = await db.prepare("SELECT COUNT(*) as c FROM messages WHERE client_id = ? AND author_type = 'admin' AND read_by_client = 0").bind(client.id).first<{ c: number }>();
+
+const categories = ['Contracts', 'Agreements', 'Forms', 'Correspondence'];
+const uploaded = Astro.url.searchParams.get('uploaded');
+---
+<PortalLayout title="Documents" unreadCount={unread?.c ?? 0}>
+  <h1>Document Vault</h1>
+  <p class="lede">PDFs and images shared with you by Prosperity Federal Solutions, and files you've uploaded.</p>
+  {uploaded && <p class="form-success">Document uploaded.</p>}
+
+  <div class="card upload-card">
+    <h2>Upload a Document</h2>
+    <form method="POST" action="/api/documents/upload" enctype="multipart/form-data">
+      <div class="form-row">
+        <label for="category">Category</label>
+        <select id="category" name="category" required>
+          {categories.map((c) => <option value={c}>{c}</option>)}
+        </select>
+      </div>
+      <div class="form-row">
+        <label for="file">File (PDF or image)</label>
+        <input type="file" id="file" name="file" accept=".pdf,image/*" required />
+      </div>
+      <button type="submit" class="btn btn-primary">Upload</button>
+    </form>
+  </div>
+
+  {categories.map((cat) => {
+    const items = docs.results.filter((d) => d.category === cat);
+    return (
+      <div class="card doc-section">
+        <h2>{cat}</h2>
+        {items.length === 0 ? (
+          <p class="muted">No documents in this category yet.</p>
+        ) : (
+          <table>
+            <thead><tr><th>File</th><th>Uploaded</th><th>Retention</th><th></th></tr></thead>
+            <tbody>
+              {items.map((d) => (
+                <tr>
+                  <td>{d.file_name}</td>
+                  <td>{d.created_at}</td>
+                  <td>{d.retention_10yr ? '10-year retention' : '—'}</td>
+                  <td><a href={`/api/documents/${d.id}/download`} class="btn btn-outline btn-sm">Download</a></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
+    );
+  })}
+</PortalLayout>
+
+<style>
+  .lede { color: var(--color-text-muted); margin-bottom: 1.5rem; }
+  .upload-card { margin-bottom: 1.5rem; }
+  .doc-section { margin-bottom: 1.25rem; }
+  .muted { color: var(--color-text-muted); }
+</style>

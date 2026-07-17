@@ -1,0 +1,39 @@
+---
+import AdminLayout from '../../../layouts/AdminLayout.astro';
+
+const admin = Astro.locals.admin;
+if (!admin) return Astro.redirect('/admin/login');
+
+const db = Astro.locals.runtime.env.DB;
+const tickets = await db
+  .prepare(
+    `SELECT t.id, t.subject, t.status, t.priority, t.created_at, c.full_name FROM tickets t
+     JOIN clients c ON c.id = t.client_id ORDER BY
+       CASE t.status WHEN 'Open' THEN 0 WHEN 'In Progress' THEN 1 ELSE 2 END,
+       t.created_at DESC`,
+  )
+  .all<{ id: string; subject: string; status: string; priority: string; created_at: string; full_name: string }>();
+---
+<AdminLayout title="Tickets">
+  <h1>Support Tickets</h1>
+  <div class="card">
+    {tickets.results.length === 0 ? <p class="muted">No tickets yet.</p> : (
+      <table>
+        <thead><tr><th>Client</th><th>Subject</th><th>Priority</th><th>Status</th><th>Opened</th><th></th></tr></thead>
+        <tbody>
+          {tickets.results.map((t) => (
+            <tr>
+              <td>{t.full_name}</td>
+              <td>{t.subject}</td>
+              <td><span class={`badge badge-${t.priority.toLowerCase()}`}>{t.priority}</span></td>
+              <td><span class={`badge badge-${t.status.toLowerCase().replace(' ', '-').replace('in-progress','progress')}`}>{t.status}</span></td>
+              <td>{t.created_at}</td>
+              <td><a href={`/admin/tickets/${t.id}/`} class="btn btn-outline btn-sm">View</a></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    )}
+  </div>
+</AdminLayout>
+<style>.muted { color: var(--color-text-muted); }</style>

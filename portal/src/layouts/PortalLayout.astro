@@ -1,0 +1,89 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  unreadCount?: number;
+}
+const { title, unreadCount = 0 } = Astro.props;
+const client = Astro.locals.client;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>{title} | PFS Client Portal</title>
+    <script is:inline>
+      (function () {
+        try {
+          var saved = localStorage.getItem('pfs_theme');
+          var theme = saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+          document.documentElement.setAttribute('data-theme', theme);
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <header class="portal-nav">
+      <div class="container nav-inner">
+        <a href="/" class="brand">Prosperity Federal Solutions <span>Client Portal</span></a>
+        {client && (
+          <nav class="nav-links">
+            <a href="/">Dashboard</a>
+            <a href="/documents/">Documents</a>
+            <a href="/contracts/">Contracts</a>
+            <a href="/tickets/">Support</a>
+            <a href="/messages/" class="msg-link">
+              Messages
+              {unreadCount > 0 && <span class="notif-badge">{unreadCount}</span>}
+            </a>
+            <a href="/appointments/">Appointments</a>
+            <button id="theme-toggle" class="btn btn-outline btn-sm" type="button" aria-label="Toggle dark mode">🌓</button>
+            <a href="/logout" class="btn btn-outline btn-sm">Log Out</a>
+          </nav>
+        )}
+      </div>
+    </header>
+    <main class="container portal-main">
+      <slot />
+    </main>
+    <footer class="portal-footer">
+      <div class="container">
+        <p>&copy; 2026 Prosperity Federal Solutions LLC — Secure Client Portal</p>
+      </div>
+    </footer>
+    <script>
+      const toggle = document.getElementById('theme-toggle');
+      toggle?.addEventListener('click', () => {
+        const root = document.documentElement;
+        const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        root.setAttribute('data-theme', next);
+        try { localStorage.setItem('pfs_theme', next); } catch (e) {}
+      });
+    </script>
+  </body>
+</html>
+
+<style>
+  .portal-nav { background: var(--color-dark); border-bottom: 1px solid rgba(255,255,255,0.1); }
+  .nav-inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; padding: 0.9rem 0; gap: 1rem; }
+  .brand { color: #fff; font-family: var(--font-heading); font-weight: 700; text-decoration: none; font-size: 1.1rem; }
+  .brand span { display: block; font-family: var(--font-body); font-size: 0.7rem; color: var(--color-teal); font-weight: 400; letter-spacing: 0.05em; }
+  .nav-links { display: flex; align-items: center; gap: 1.1rem; flex-wrap: wrap; }
+  .nav-links a:not(.btn) { color: #e2d4f0; text-decoration: none; font-weight: 600; font-size: 0.9rem; }
+  .nav-links a:not(.btn):hover { color: var(--color-teal); }
+  .msg-link { position: relative; }
+  .notif-badge {
+    background: var(--color-gold);
+    color: var(--color-dark);
+    border-radius: 999px;
+    font-size: 0.7rem;
+    font-weight: 800;
+    padding: 0.05rem 0.4rem;
+    margin-left: 0.3rem;
+  }
+  .portal-main { padding: 2.5rem 1.5rem; min-height: 60vh; }
+  .portal-footer { border-top: 1px solid var(--color-border); padding: 1.5rem 0; color: var(--color-text-muted); font-size: 0.8rem; }
+</style>

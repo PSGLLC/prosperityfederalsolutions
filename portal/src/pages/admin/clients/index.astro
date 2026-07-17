@@ -1,0 +1,73 @@
+---
+import AdminLayout from '../../../layouts/AdminLayout.astro';
+
+const admin = Astro.locals.admin;
+if (!admin) return Astro.redirect('/admin/login');
+
+const db = Astro.locals.runtime.env.DB;
+const clients = await db
+  .prepare('SELECT id, full_name, email, company_name, active, created_at FROM clients ORDER BY created_at DESC')
+  .all<{ id: string; full_name: string; email: string; company_name: string | null; active: number; created_at: string }>();
+
+const created = Astro.url.searchParams.get('created');
+const error = Astro.url.searchParams.get('error');
+---
+<AdminLayout title="Clients">
+  <h1>Clients</h1>
+  {created && <p class="form-success">Client account created. Share the temporary password with them securely.</p>}
+  {error && <p class="form-error">{decodeURIComponent(error)}</p>}
+
+  <div class="card new-client">
+    <h2>Create Client Account</h2>
+    <form method="POST" action="/api/admin/clients/create">
+      <div class="grid grid-2">
+        <div class="form-row">
+          <label for="fullName">Full Name</label>
+          <input type="text" id="fullName" name="fullName" required />
+        </div>
+        <div class="form-row">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required />
+        </div>
+        <div class="form-row">
+          <label for="companyName">Company / Agency (optional)</label>
+          <input type="text" id="companyName" name="companyName" />
+        </div>
+        <div class="form-row">
+          <label for="phone">Phone (optional)</label>
+          <input type="tel" id="phone" name="phone" />
+        </div>
+        <div class="form-row">
+          <label for="password">Temporary Password</label>
+          <input type="text" id="password" name="password" required minlength="10" />
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary">Create Account</button>
+    </form>
+  </div>
+
+  <div class="card">
+    <h2>All Clients</h2>
+    {clients.results.length === 0 ? <p class="muted">No client accounts yet.</p> : (
+      <table>
+        <thead><tr><th>Name</th><th>Email</th><th>Company</th><th>Status</th><th></th></tr></thead>
+        <tbody>
+          {clients.results.map((c) => (
+            <tr>
+              <td>{c.full_name}</td>
+              <td>{c.email}</td>
+              <td>{c.company_name || '—'}</td>
+              <td>{c.active ? <span class="badge badge-active">Active</span> : <span class="badge badge-cancelled">Disabled</span>}</td>
+              <td><a href={`/admin/clients/${c.id}/`} class="btn btn-outline btn-sm">Manage</a></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    )}
+  </div>
+</AdminLayout>
+
+<style>
+  .new-client { margin-bottom: 1.5rem; }
+  .muted { color: var(--color-text-muted); }
+</style>
