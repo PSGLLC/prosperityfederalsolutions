@@ -18,6 +18,10 @@ const jsonLd = [
     '@type': 'WebPage',
     name: 'Services | Prosperity Federal Solutions',
     url: 'https://prosperityfederalsolutions.com/services/',
+    speakable: {
+      '@type': 'SpeakableSpecification',
+      cssSelector: ['h1', '.subhead'],
+    },
   },
   {
     '@context': 'https://schema.org',
@@ -104,6 +108,7 @@ const capabilities = [
         Prosperity Federal Solutions supports government and institutional clients with reliable
         procurement, vendor coordination, fulfillment, and supply solutions built to scale.
       </p>
+      <p class="page-links">Questions? See our <a href="/faq/">FAQ</a> or <a href="/contact/">contact us</a>.</p>
     </div>
   </section>
 
@@ -116,12 +121,20 @@ const capabilities = [
       </div>
     </section>
   ))}
+
+  <section>
+    <div class="container">
+      <p class="last-reviewed">Last reviewed: July 2026</p>
+    </div>
+  </section>
 </BaseLayout>
 
 <style>
   .page-hero { background: var(--color-lavender); padding: 4rem 0; }
   :root[data-theme="dark"] .page-hero { background: var(--color-bg-alt); }
   .subhead { color: var(--color-text-muted); font-size: 1.1rem; max-width: 680px; }
+  .page-links { font-size: 0.9rem; margin-top: 0.75rem; }
   .service-block { max-width: 780px; }
   .service-desc { color: var(--color-text-muted); font-size: 1.05rem; margin-bottom: 1.5rem; }
+  .last-reviewed { color: var(--color-text-muted); font-size: 0.78rem; }
 </style>

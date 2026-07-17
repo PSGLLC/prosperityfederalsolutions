@@ -6,6 +6,10 @@ const jsonLd = {
   '@type': 'AboutPage',
   name: 'About Prosperity Federal Solutions',
   url: 'https://prosperityfederalsolutions.com/about/',
+  speakable: {
+    '@type': 'SpeakableSpecification',
+    cssSelector: ['h1', '.about-copy'],
+  },
 };
 ---
 <BaseLayout
@@ -45,7 +49,9 @@ const jsonLd = {
           </p>
         </div>
         <p class="sam-note"><em>SAM.gov registration in progress. Certifications pending.</em></p>
+        <p class="about-links">See our <a href="/services/">full services breakdown</a> or check the <a href="/faq/">FAQ</a>.</p>
         <a href="/contact/" class="btn btn-teal about-cta">Let's Work Together</a>
+        <p class="last-reviewed">Last reviewed: July 2026</p>
       </div>
       <div class="about-headshot">
         <img src="/img/headshot.png" alt="Kayla Price, of the Price Services Group family of companies" />
@@ -80,7 +86,9 @@ const jsonLd = {
     margin-top: 0.75rem;
   }
   .sam-note { color: var(--color-text-muted); font-size: 0.85rem; margin-top: 1.25rem; }
+  .about-links { font-size: 0.9rem; margin-top: 0.5rem; }
   .about-cta { margin-top: 0.5rem; }
+  .last-reviewed { color: var(--color-text-muted); font-size: 0.78rem; margin-top: 0.75rem; }
   @media (max-width: 800px) {
     .about-grid { grid-template-columns: 1fr; }
     .about-headshot { max-width: 260px; margin: 0 auto; }

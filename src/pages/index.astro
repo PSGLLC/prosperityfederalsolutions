@@ -58,6 +58,16 @@ const jsonLd = [
     serviceType: 'Procurement, Supply, Logistics',
     areaServed: 'US',
   },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: 'Prosperity Federal Solutions',
+    url: 'https://prosperityfederalsolutions.com/',
+    speakable: {
+      '@type': 'SpeakableSpecification',
+      cssSelector: ['h1', '.subhead'],
+    },
+  },
 ];
 
 const faqJsonLd = {
@@ -191,6 +201,8 @@ const faqJsonLd = {
       <h2>Ready to work with us?</h2>
       <p>Schedule a consultation to talk through your procurement and supply needs.</p>
       <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer" class="btn btn-teal">Schedule a Consultation</a>
+      <p class="cta-links">Have questions first? <a href="/faq/">Read our FAQ</a>.</p>
+      <p class="last-reviewed">Last reviewed: July 2026</p>
     </div>
   </section>
 </BaseLayout>
@@ -222,4 +234,7 @@ const faqJsonLd = {
   }
   .cta-inner h2 { color: #fff; }
   .cta-inner p { color: #f0e6f8; margin-bottom: 1.5rem; }
+  .cta-links { color: #f0e6f8; font-size: 0.9rem; margin-top: 0.75rem; }
+  .cta-links a { color: #fff; }
+  .last-reviewed { color: #cbb8e3; font-size: 0.78rem; margin-top: 0.5rem; }
 </style>

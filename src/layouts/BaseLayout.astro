@@ -10,15 +10,36 @@ interface Props {
   path: string;
   jsonLd?: Record<string, any> | Record<string, any>[];
   ogImage?: string;
+  breadcrumbLabel?: string;
 }
 
-const { title, description, path, jsonLd, ogImage = '/brand/psg-logo.png' } = Astro.props;
+const { title, description, path, jsonLd, ogImage = '/brand/psg-logo.png', breadcrumbLabel } = Astro.props;
 // Astro builds directory-style output (/about/index.html) and Cloudflare 308-redirects
 // /about -> /about/, so the canonical must self-reference the trailing-slash URL.
 const normalizedPath = path === '/' || path.endsWith('/') ? path : `${path}/`;
 const canonical = new URL(normalizedPath, SITE_URL).toString();
 const ogImageUrl = new URL(ogImage, SITE_URL).toString();
 const jsonLdEntries = Array.isArray(jsonLd) ? jsonLd : jsonLd ? [jsonLd] : [];
+
+// Sitewide BreadcrumbList schema, derived from the path so every page gets one automatically.
+const breadcrumbItems = [
+  { name: 'Home', url: new URL('/', SITE_URL).toString() },
+];
+if (normalizedPath !== '/') {
+  const label = breadcrumbLabel || title.split('|')[0].trim();
+  breadcrumbItems.push({ name: label, url: canonical });
+}
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: breadcrumbItems.map((item, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: item.name,
+    item: item.url,
+  })),
+};
+const allJsonLdEntries = [...jsonLdEntries, breadcrumbJsonLd];
 ---
 <!doctype html>
 <html lang="en">
@@ -40,7 +61,7 @@ const jsonLdEntries = Array.isArray(jsonLd) ? jsonLd : jsonLd ? [jsonLd] : [];
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageUrl} />
 
-    {jsonLdEntries.map((entry) => (
+    {allJsonLdEntries.map((entry) => (
       <script type="application/ld+json" set:html={JSON.stringify(entry)} />
     ))}
 

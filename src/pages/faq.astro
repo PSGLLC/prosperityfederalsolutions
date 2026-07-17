@@ -1,0 +1,103 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const faqs = [
+  {
+    q: 'What does Prosperity Federal Solutions do?',
+    a: 'Prosperity Federal Solutions provides reliable sourcing, procurement, and fulfillment of general goods and operational supplies for federal, state, and local agencies, with a focus on efficiency, compliance, and consistent execution.',
+  },
+  {
+    q: 'Who does Prosperity Federal Solutions serve?',
+    a: 'We serve federal agencies, state and local governments, and institutional and commercial clients that need dependable procurement, vendor sourcing, and contract fulfillment support.',
+  },
+  {
+    q: 'What vendor sourcing and coordination services are offered?',
+    a: 'We build and coordinate a dependable network of vendors to meet client requirements, managing relationships so procurement needs are met consistently and on schedule.',
+  },
+  {
+    q: 'How does Prosperity Federal Solutions handle contract fulfillment and logistics?',
+    a: 'We manage fulfillment and logistics end-to-end so contracts are delivered accurately and on time, keeping operations running smoothly for the agencies and clients we support.',
+  },
+  {
+    q: 'Do you support ongoing operational supply needs, not just one-time contracts?',
+    a: 'Yes. Beyond one-time procurement, we support the ongoing operational supply needs of our clients, helping agencies and institutions keep the goods and materials they depend on flowing reliably.',
+  },
+  {
+    q: 'Can Prosperity Federal Solutions scale with growing procurement needs?',
+    a: 'Yes. Our procurement processes and supply systems are designed to scale with client demand, supporting long-term partnerships as operational needs grow.',
+  },
+  {
+    q: 'Is Prosperity Federal Solutions registered in SAM.gov?',
+    a: 'SAM.gov registration is currently in progress, with certifications pending, as part of our ongoing steps to formalize federal contracting eligibility.',
+  },
+  {
+    q: 'How do I get started or request a consultation?',
+    a: 'You can schedule a consultation directly through our booking link, or reach out through our contact form, phone, or email. We’ll follow up to discuss your procurement or supply needs.',
+  },
+];
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: 'FAQ | Prosperity Federal Solutions',
+    url: 'https://prosperityfederalsolutions.com/faq/',
+    speakable: {
+      '@type': 'SpeakableSpecification',
+      cssSelector: ['.faq-question', '.faq-answer'],
+    },
+  },
+];
+---
+<BaseLayout
+  title="FAQ | Prosperity Federal Solutions"
+  description="Common questions about Prosperity Federal Solutions' procurement, vendor sourcing, contract fulfillment, and supply services for government and institutional clients."
+  path="/faq"
+  jsonLd={jsonLd}
+  breadcrumbLabel="FAQ"
+>
+  <section class="page-hero">
+    <div class="container">
+      <p class="eyebrow">FAQ</p>
+      <h1>Frequently Asked Questions</h1>
+      <p class="subhead">Answers to common questions about our procurement and supply services.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="container faq-list">
+      {faqs.map((f) => (
+        <div class="card faq-item">
+          <h2 class="faq-question">{f.q}</h2>
+          <p class="faq-answer">{f.a}</p>
+        </div>
+      ))}
+      <p class="last-reviewed">Last reviewed: July 2026</p>
+      <p class="faq-cta">
+        Still have questions? <a href="/contact/">Contact us</a> or see our
+        <a href="/services/">full services breakdown</a>.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-hero { background: var(--color-lavender); padding: 4rem 0; }
+  :root[data-theme="dark"] .page-hero { background: var(--color-bg-alt); }
+  .subhead { color: var(--color-text-muted); font-size: 1.1rem; max-width: 640px; }
+  .faq-list { max-width: 780px; display: flex; flex-direction: column; gap: 1.25rem; }
+  .faq-item { text-align: left; }
+  .faq-question { font-size: 1.1rem; margin: 0 0 0.5rem; }
+  .faq-answer { color: var(--color-text-muted); margin: 0; }
+  .last-reviewed { color: var(--color-text-muted); font-size: 0.8rem; margin-top: 0.5rem; }
+  .faq-cta { font-size: 0.95rem; }
+</style>
