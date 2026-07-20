@@ -1,0 +1,59 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: 'Prosperity Federal Solutions Blog',
+  description: 'Government procurement and vendor sourcing articles from Prosperity Federal Solutions — coming soon.',
+  url: 'https://prosperityfederalsolutions.com/blog/',
+};
+---
+<BaseLayout
+  title="Procurement Blog | Articles Coming Soon | Prosperity Federal"
+  description="New articles on government procurement, vendor sourcing, and contract fulfillment are coming soon to Prosperity Federal Solutions."
+  path="/blog/"
+  jsonLd={jsonLd}
+>
+  <section class="blog-hero">
+    <div class="container">
+      <p class="eyebrow">Procurement Blog</p>
+      <h1>New Articles Are on the Way</h1>
+      <p class="blog-hero-sub">
+        We're building out a library of articles on government procurement, vendor sourcing, and
+        contract fulfillment for institutional and government clients. Nothing's published yet,
+        but it's actively in the works.
+      </p>
+      <div class="blog-hero-cta">
+        <a href="/services/" class="btn btn-primary">Explore Our Services →</a>
+        <a href="/faq/" class="btn btn-outline">Read Our FAQ →</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="blog-newsletter-section">
+    <div class="container blog-newsletter-inner">
+      <div>
+        <h2>Want to Know When New Articles Go Live?</h2>
+        <p>
+          Reach out and we'll keep you posted on new procurement guidance and updates from
+          Prosperity Federal Solutions.
+        </p>
+      </div>
+      <a href="/contact/" class="btn btn-primary">Get in Touch →</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .blog-hero { padding: 3.5rem 0 2.5rem; text-align: center; }
+  .blog-hero-sub { max-width: 58ch; margin: 1rem auto 1.75rem; font-size: 1.05rem; line-height: 1.7; }
+  .blog-hero-cta { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+
+  .blog-newsletter-section { padding: 2.5rem 0 4rem; background: var(--soft, #f5effe); }
+  .blog-newsletter-inner {
+    display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap;
+  }
+  .blog-newsletter-inner h2 { margin: 0 0 .4rem; font-size: 1.3rem; }
+  .blog-newsletter-inner p { margin: 0; color: var(--muted, #5a4a6e); max-width: 46ch; }
+</style>
